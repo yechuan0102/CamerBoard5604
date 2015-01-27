@@ -46,15 +46,11 @@ word selectRows[ROWS]=
 //*************************************************************************
 void FieldInputCapture(void) 
 {	
-//	return;
+	D0=~D0;
 //    	EMIOS_0.CH[3].CSR.B.FLAG = 1;
-
- EMIOS_0.CH[3].CCR.B.FEN=0;  //关闭场中断 
-   
-D0=~D0;
-//		EMIOS_0.CH[3].CCR.B.FEN=1;
+	EMIOS_0.CH[3].CCR.B.FEN=0;  //关闭场中断 
 	prow=0;crow=0;
-		EMIOS_0.CH[7].CCR.B.FEN=1;
+	EMIOS_0.CH[7].CCR.B.FEN=1;	//开启行中断
 }
 
 

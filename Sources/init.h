@@ -13,7 +13,7 @@ extern void initEMIOS_0Image(void) ;
 
 extern void delay_us(DWORD us);
 extern void delay_ms(DWORD ms);
-
+extern void init_DSPI_1(void);
 extern void initEMIOS_0Image(void);			//场行中断初始化
 
 
