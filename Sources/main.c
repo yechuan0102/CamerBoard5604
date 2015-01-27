@@ -53,7 +53,7 @@ int main(void)
 				Display_Video();
 				D3=~D3;
 				fieldover=0;
-				EMIOS_0.CH[3].CSR.B.FLAG = 1;
+		//		EMIOS_0.CH[3].CSR.B.FLAG = 1;
 				EMIOS_0.CH[3].CCR.B.FEN=1;
 			}
 			//	EMIOS_0.CH[3].CSR.B.FLAG = 1;
