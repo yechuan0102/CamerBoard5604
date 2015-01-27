@@ -70,3 +70,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# codewarrior 10.6
+/FLASH
+/RAM
