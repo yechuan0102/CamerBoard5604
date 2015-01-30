@@ -176,37 +176,127 @@ void init_EMIOS_0(void)
 
 
 /* 
- * 初始化按键
+ * 初始化按键0
  * 测试中
- * 使用E0
+ * 使用PD13 E0UC25 IRQ153
+ */
+void init_key_0(void)
+{
+    EMIOS_0.CH[25].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+    EMIOS_0.CH[25].CCR.B.BSL = 0b11; /* Use counter bus B (default) */
+    EMIOS_0.CH[25].CCR.B.EDSEL = 0;  //Both edges
+    EMIOS_0.CH[25].CCR.B.EDPOL = 0; //Edge Select falling edge
+    SIU.PCR[61].R = 0x0100;  // Initialize pad for eMIOS channel Initialize pad for input
+    SIU.PSMI[26].B.PADSEL = 0b00;
+    INTC_InstallINTCInterruptHandler(INTC_press_key_0_2_handler, 153, 1);
+    EMIOS_0.CH[25].CCR.B.FEN = 1;  //interupt enbale
+}
+
+
+/* 
+ * 初始化按键1
+ * 使用PB12 E0UC4 IRQ143
  */
 void init_key_1(void)
 {
-    //PB12 E0UC4 下降沿
     EMIOS_0.CH[4].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
     EMIOS_0.CH[4].CCR.B.BSL = 0b11; /* Use counter bus B (default) */
     EMIOS_0.CH[4].CCR.B.EDSEL = 0;  //Both edges
-    EMIOS_0.CH[4].CCR.B.EDPOL = 1; //Edge Select falling edge
+    EMIOS_0.CH[4].CCR.B.EDPOL = 0; //Edge Select falling edge
     SIU.PCR[28].R = 0x0100;  // Initialize pad for eMIOS channel Initialize pad for input
     SIU.PSMI[14].B.PADSEL = 0b01;
-    INTC_InstallINTCInterruptHandler(INTC_press_key_0_handler, 143, 1);
+    INTC_InstallINTCInterruptHandler(INTC_press_key_1_handler, 143, 1);
     EMIOS_0.CH[4].CCR.B.FEN = 1;  //interupt enbale
 }
 
 
-/*
- * 按键0中断处理函数
- * 使用
+/* 
+ * 初始化按键2
+ * 使用PD12 E0UC24 IRQ143
  */
-void INTC_press_key_0_handler(void)
+void init_key_2(void)
+{
+    EMIOS_0.CH[24].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+    EMIOS_0.CH[24].CCR.B.BSL = 0b11; /* Use counter bus B (default) */
+    EMIOS_0.CH[24].CCR.B.EDSEL = 0;  //Both edges
+    EMIOS_0.CH[24].CCR.B.EDPOL = 0; //Edge Select falling edge
+    SIU.PCR[60].R = 0x0100;  // Initialize pad for eMIOS channel Initialize pad for input
+    SIU.PSMI[25].B.PADSEL = 0b00;
+    INTC_InstallINTCInterruptHandler(INTC_press_key_0_2_handler, 153, 1);
+    EMIOS_0.CH[24].CCR.B.FEN = 1;  //interupt enbale
+}
+
+
+/* 
+ * 初始化按键3
+ * 使用PB11 E0UC3 IRQ142
+ */
+void init_key_3(void)
+{
+    EMIOS_0.CH[3].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+    EMIOS_0.CH[3].CCR.B.BSL = 0b11; /* Use counter bus B (default) */
+    EMIOS_0.CH[3].CCR.B.EDSEL = 0;  //Both edges
+    EMIOS_0.CH[3].CCR.B.EDPOL = 0; //Edge Select falling edge
+    SIU.PCR[27].R = 0x0100;  // Initialize pad for eMIOS channel Initialize pad for input
+    SIU.PSMI[13].B.PADSEL = 0b01;
+    INTC_InstallINTCInterruptHandler(INTC_press_key_3_handler, 142, 1);
+    EMIOS_0.CH[3].CCR.B.FEN = 1;  //interupt enbale
+}
+
+
+/*
+ * 按键0,按键2中断处理函数
+ */
+void INTC_press_key_0_2_handler(void)
+{
+    if (EMIOS_0.CH[24].CSR.B.FLAG)
+    {
+        /* 按键2 */
+        EMIOS_0.CH[24].CSR.B.FLAG = 1;
+        D2= ~D2;
+    }
+    else if (EMIOS_0.CH[25].CSR.B.FLAG)
+    {
+        /* 按键0 */
+        EMIOS_0.CH[25].CSR.B.FLAG = 1;
+        D0 = ~D0;
+    }
+}
+
+
+/*
+ * 按键1中断处理函数
+ */
+void INTC_press_key_1_handler(void)
 {
     if (EMIOS_0.CH[4].CSR.B.FLAG)
     {
+        /* 按键1 */
         EMIOS_0.CH[4].CSR.B.FLAG = 1;
         D1 = ~D1;
     }
     else if (EMIOS_0.CH[5].CSR.B.FLAG)
     {
+        /* 未使用 */
         EMIOS_0.CH[5].CSR.B.FLAG = 1;
+    }
+}
+
+
+/*
+ * 按键3中断处理函数
+ */
+void INTC_press_key_3_handler(void)
+{
+    if (EMIOS_0.CH[2].CSR.B.FLAG)
+    {
+        /* 未使用 */
+        EMIOS_0.CH[2].CSR.B.FLAG = 1;
+    }
+    else if (EMIOS_0.CH[3].CSR.B.FLAG)
+    {
+        /* 按键3 */
+        EMIOS_0.CH[3].CSR.B.FLAG = 1;
+        D3 = ~D3;
     }
 }
