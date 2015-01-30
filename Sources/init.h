@@ -15,6 +15,9 @@ extern void delay_us(DWORD us);
 extern void delay_ms(DWORD ms);
 extern void init_DSPI_1(void);
 extern void initEMIOS_0Image(void);			//场行中断初始化
+extern void init_EMIOS_0(void);
+extern void init_key_1(void);
+extern void INTC_press_key_0_handler(void);
 
 
 #endif

@@ -4,30 +4,30 @@
 
 
 /*-----------------------------------------------------------------------*/
-/* ÉèÖÃµ¥Æ¬»úµÄÄ£Ê½ºÍÊ±ÖÓ                                                */
+/* è®¾ç½®å•ç‰‡æœºçš„æ¨¡å¼å’Œæ—¶é’Ÿ                                                */
 /*-----------------------------------------------------------------------*/
 void init_modes_and_clock(void) 
 {
     ME.MER.R = 0x0000001D;	/* Enable DRUN, RUN0, SAFE, RESET modes */
-	/* ÉèÖÃsysclk */
+	/* è®¾ç½®sysclk */
     //CGM.FMPLL_CR.R = 0x02400100;	/* 8 MHz xtal: Set PLL0 to 64 MHz */
     CGM.FMPLL_CR.R = 0x01280000;	/* 8 MHz xtal: Set PLL0 to 80 MHz */
     //CGM.FMPLL_CR.R = 0x013C0000;	/* 8 MHz xtal: Set PLL0 to 120 MHz */ 
-    ME.RUN[0].R = 0x001F0064;	/* RUN0 cfg: 16MHzIRCON,OSC0ON,PLL0ON,syclk=PLL     sysclkÑ¡ÔñËøÏà»·Ê±ÖÓ */
-    ME.RUNPC[0].R = 0x00000010;	/* Peri. Cfg. 1 settings: only run in RUN0 mode      Ñ¡ÔñRUN0Ä£Ê½ */
+    ME.RUN[0].R = 0x001F0064;	/* RUN0 cfg: 16MHzIRCON,OSC0ON,PLL0ON,syclk=PLL     sysclké€‰æ‹©é”ç›¸ç¯æ—¶é’Ÿ */
+    ME.RUNPC[0].R = 0x00000010;	/* Peri. Cfg. 1 settings: only run in RUN0 mode      é€‰æ‹©RUN0æ¨¡å¼ */
   
-	/* PCTL[?] Ñ¡ÔñĞèÒªÊ±ÖÓÄ£¿é(Ä¬ÈÏ¼´¿É£¬²»ÓÃÉèÖÃ) */
+	/* PCTL[?] é€‰æ‹©éœ€è¦æ—¶é’Ÿæ¨¡å—(é»˜è®¤å³å¯ï¼Œä¸ç”¨è®¾ç½®) */
 	//ME.PCTL[32].R = 0x00;	/* MPC56xxB/P/S ADC 0: select ME.RUNPC[0] */
     ME.PCTL[32].B.DBG_F = 0;
 	/* Mode Transition to enter RUN0 mode */
     ME.MCTL.R = 0x40005AF0;	/* Enter RUN0 Mode & Key */
     ME.MCTL.R = 0x4000A50F;	/* Enter RUN0 Mode & Inverted Key */
     
-    while (ME.GS.B.S_MTRANS) {}	/* Wait for mode transition to complete µÈ´ıÄ£Ê½×ª»»Íê³É */
-    while(ME.GS.B.S_CURRENTMODE != 4) {} /* Verify RUN0 is the current mode µÈ´ıÑ¡ÔñRUN0Ä£Ê½ */
+    while (ME.GS.B.S_MTRANS) {}	/* Wait for mode transition to complete ç­‰å¾…æ¨¡å¼è½¬æ¢å®Œæˆ */
+    while(ME.GS.B.S_CURRENTMODE != 4) {} /* Verify RUN0 is the current mode ç­‰å¾…é€‰æ‹©RUN0æ¨¡å¼ */
   
-	/* ¿ªperi0¡¢1¡¢2 */
-	/* ÍâÉèÊ±ÖÓ×ÜÏß ¿ÉÓÃÓÚ·ÖÆµ */
+	/* å¼€peri0ã€1ã€2 */
+	/* å¤–è®¾æ—¶é’Ÿæ€»çº¿ å¯ç”¨äºåˆ†é¢‘ */
 	CGM.SC_DC[0].R = 0x84;	/* LIN */
 	CGM.SC_DC[1].R = 0x80;	/* FLEXCAN,DSPI */
     CGM.SC_DC[2].R = 0x80;	/* eMIOS,CTU,ADC */
@@ -35,8 +35,8 @@ void init_modes_and_clock(void)
 
 
 /*-----------------------------------------------------------------------*/
-/* ½ûÓÃ¿´ÃÅ¹·                                                            */
-/* ¾İĞì²©ËµÓ¦¸ÃÊ×ÏÈÔËĞĞ                                                  */
+/* ç¦ç”¨çœ‹é—¨ç‹—                                                            */
+/* æ®å¾åšè¯´åº”è¯¥é¦–å…ˆè¿è¡Œ                                                  */
 /*-----------------------------------------------------------------------*/
 void disable_watchdog(void)
 {
@@ -47,15 +47,15 @@ void disable_watchdog(void)
 
 
 /*-----------------------------------------------------------------------*/
-/* ³õÊ¼SPI×ÜÏß	                                                        */
+/* åˆå§‹SPIæ€»çº¿	                                                        */
 /*-----------------------------------------------------------------------*/
 void init_DSPI_1(void)
 {
 	DSPI_1.MCR.R = 0x803f0001;     /* Configure DSPI_0 as master */
-	DSPI_1.CTAR[0].R = 0x3E0A7729;	//Î´Ê¹ÓÃ ÓÃÓÚ·¢ËÍ8bits µ÷Õû¼«ĞÔÎª1£¬ÏàÎ»Îª1£¬µ÷Õû²¨ÌØÂÊÎªµÍËÙ31.25kbit/s
-	DSPI_1.CTAR[1].R = 0x38087726;  //TF ¼«ĞÔÎª0£¬ÏàÎ»Îª0£¬baud rate=625k/s
-	DSPI_1.CTAR[2].R = 0x3E0A7724;  //L3G4200D ¼«ĞÔÎª1£¬ÏàÎ»Îª1£¬baud rate=1m/s
-	DSPI_1.CTAR[3].R = 0x380A7720;	//OLED ¼«ĞÔÎª0£¬ÏàÎ»Îª0£¬baud rate=8m/s
+	DSPI_1.CTAR[0].R = 0x3E0A7729;	//æœªä½¿ç”¨ ç”¨äºå‘é€8bits è°ƒæ•´ææ€§ä¸º1ï¼Œç›¸ä½ä¸º1ï¼Œè°ƒæ•´æ³¢ç‰¹ç‡ä¸ºä½é€Ÿ31.25kbit/s
+	DSPI_1.CTAR[1].R = 0x38087726;  //TF ææ€§ä¸º0ï¼Œç›¸ä½ä¸º0ï¼Œbaud rate=625k/s
+	DSPI_1.CTAR[2].R = 0x3E0A7724;  //L3G4200D ææ€§ä¸º1ï¼Œç›¸ä½ä¸º1ï¼Œbaud rate=1m/s
+	DSPI_1.CTAR[3].R = 0x380A7720;	//OLED ææ€§ä¸º0ï¼Œç›¸ä½ä¸º0ï¼Œbaud rate=8m/s
 	DSPI_1.MCR.B.HALT = 0x0;	     /* Exit HALT mode: go from STOPPED to RUNNING state*/
 	SIU.PCR[34].R = 0x0604;	//PC2 SCK_1
 	//SIU.PSMI[7].R = 0;	//SCK_1 PCR[34]
@@ -68,12 +68,12 @@ void init_DSPI_1(void)
 	SIU.PCR[67].R = 0x0A04;	//PE3 SOUT_1
 	SIU.PCR[74].R = 0x0A04;	//PE10 CS3_1
 	SIU.PCR[75].R = 0x0A04;	//PE11 CS4_1
-	DSPI_1.RSER.B.TCFRE = 0;	//¹Ø±Õ´«ÊäÍê³ÉÖĞ¶Ï
+	DSPI_1.RSER.B.TCFRE = 0;	//å…³é—­ä¼ è¾“å®Œæˆä¸­æ–­
 }
 
 
 /*-----------------------------------------------------------------------*/
-/* ³õÊ¼»¯°åÔØLED                                                         */
+/* åˆå§‹åŒ–æ¿è½½LED                                                         */
 /*-----------------------------------------------------------------------*/
 void init_led(void)
 {
@@ -82,7 +82,7 @@ void init_led(void)
  	SIU.PCR[44].R = 0x0203; /* PC12 */
 	SIU.PCR[71].R = 0x0203;	/* PE7  */
  	
-	SIU.GPDO[40].R = 1;	/* 1=Ï¨Ãğ */
+	SIU.GPDO[40].R = 1;	/* 1=ç†„ç­ */
 	SIU.GPDO[45].R = 1;
 	SIU.GPDO[44].R = 1;
 	SIU.GPDO[71].R = 1;
@@ -91,11 +91,11 @@ void init_led(void)
 
 
 /*----------------------------------------------------------------------*/
-/*ÊÓÆµĞÅºÅ³¡ĞĞÖĞ¶Ï³õÊ¼                                             	 */
+/*è§†é¢‘ä¿¡å·åœºè¡Œä¸­æ–­åˆå§‹                                             	 */
 /*----------------------------------------------------------------------*/
 void initEMIOS_0Image(void) 
 { 
-	//PA3³¡ÖĞ¶Ï²¶×½ÉÏÉıÑØ¼°ÏÂ½µÑØ
+	//PA3åœºä¸­æ–­æ•æ‰ä¸Šå‡æ²¿åŠä¸‹é™æ²¿
 	EMIOS_0.CH[3].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
 	EMIOS_0.CH[3].CCR.B.BSL = 0x01; /* Use counter bus B (default) */
 	EMIOS_0.CH[3].CCR.B.EDSEL = 1;  //Both edges
@@ -104,7 +104,7 @@ void initEMIOS_0Image(void)
 	SIU.PCR[3].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
 	INTC_InstallINTCInterruptHandler(FieldInputCapture,142,1);  
 	
-	//PA7ĞĞÖĞ¶Ï²¶×½ÉÏÉıÑØ
+	//PA7è¡Œä¸­æ–­æ•æ‰ä¸Šå‡æ²¿
 	EMIOS_0.CH[7].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
 	EMIOS_0.CH[7].CCR.B.BSL = 0x01; /* Use counter bus B (default) */
 	EMIOS_0.CH[7].CCR.B.EDSEL = 0;
@@ -113,15 +113,15 @@ void initEMIOS_0Image(void)
 	SIU.PCR[7].R = 0x0102;  // Initialize pad for eMIOS channel Initialize pad for input 
 	INTC_InstallINTCInterruptHandler(RowInputCapture,144,3); 
 	
-	//C10¿Ú¶şÖµ»¯Èë¿Ú
-	SIU.PCR[42].R = 0x0102;  // C9¿Ú¶şÖµ»¯Èë¿Ú
+	//C10å£äºŒå€¼åŒ–å…¥å£
+	SIU.PCR[42].R = 0x0102;  // C9å£äºŒå€¼åŒ–å…¥å£
 }
 
 
 
 /*-----------------------------------------------------------------------*/
-/* Ê¹ÄÜÍâ²¿ÖĞ¶Ï                                                          */
-/* ×Ü¿ª¹Ø                                                                */
+/* ä½¿èƒ½å¤–éƒ¨ä¸­æ–­                                                          */
+/* æ€»å¼€å…³                                                                */
 /*-----------------------------------------------------------------------*/
 void enable_irq(void)
 {
@@ -133,8 +133,8 @@ void enable_irq(void)
 
 
 /*-----------------------------------------------------------------------*/
-/* ÑÓÊ± xus                                                              */
-/* ÒÀÀµ×ÜÏß80M                                                           */
+/* å»¶æ—¶ xus                                                              */
+/* ä¾èµ–æ€»çº¿80M                                                           */
 /*-----------------------------------------------------------------------*/
 void delay_us(DWORD us)
 {
@@ -148,8 +148,8 @@ void delay_us(DWORD us)
 
 
 /*-----------------------------------------------------------------------*/
-/* ÑÓÊ± xms                                                              */
-/* ÒÀÀµdelay_us()                                                        */
+/* å»¶æ—¶ xms                                                              */
+/* ä¾èµ–delay_us()                                                        */
 /*-----------------------------------------------------------------------*/
 void delay_ms(DWORD ms)
 {
@@ -162,9 +162,51 @@ void delay_ms(DWORD ms)
 }
 
 
+/*
+ * åˆå§‹åŒ–EMIOS_0æ¨¡å—
+ */
+void init_EMIOS_0(void)
+{
+    /* eMIOS0åˆå§‹åŒ–80MHzåˆ†ä¸º10MHz */
+    EMIOS_0.MCR.B.GPRE= 7;  /* GPRE+1=åˆ†é¢‘ç³»æ•°ï¼›/* Divide 80 MHz sysclk by 7+1 = 8 for 10MHz eMIOS clk */
+    EMIOS_0.MCR.B.GPREN = 1;    /* Enable eMIOS clock */
+    EMIOS_0.MCR.B.GTBE = 1;   /* Enable global time base */
+    EMIOS_0.MCR.B.FRZ = 1;    /* Enable stopping channels when in debug mode */
+}
 
 
+/* 
+ * åˆå§‹åŒ–æŒ‰é”®
+ * æµ‹è¯•ä¸­
+ * ä½¿ç”¨E0
+ */
+void init_key_1(void)
+{
+    //PB12 E0UC4 ä¸‹é™æ²¿
+    EMIOS_0.CH[4].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
+    EMIOS_0.CH[4].CCR.B.BSL = 0b11; /* Use counter bus B (default) */
+    EMIOS_0.CH[4].CCR.B.EDSEL = 0;  //Both edges
+    EMIOS_0.CH[4].CCR.B.EDPOL = 1; //Edge Select falling edge
+    SIU.PCR[28].R = 0x0100;  // Initialize pad for eMIOS channel Initialize pad for input
+    SIU.PSMI[14].B.PADSEL = 0b01;
+    INTC_InstallINTCInterruptHandler(INTC_press_key_0_handler, 143, 1);
+    EMIOS_0.CH[4].CCR.B.FEN = 1;  //interupt enbale
+}
 
 
-
-
+/*
+ * æŒ‰é”®0ä¸­æ–­å¤„ç†å‡½æ•°
+ * ä½¿ç”¨
+ */
+void INTC_press_key_0_handler(void)
+{
+    if (EMIOS_0.CH[4].CSR.B.FLAG)
+    {
+        EMIOS_0.CH[4].CSR.B.FLAG = 1;
+        D1 = ~D1;
+    }
+    else if (EMIOS_0.CH[5].CSR.B.FLAG)
+    {
+        EMIOS_0.CH[5].CSR.B.FLAG = 1;
+    }
+}
