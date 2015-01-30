@@ -14,7 +14,7 @@ extern void initEMIOS_0Image(void) ;
 extern void delay_us(DWORD us);
 extern void delay_ms(DWORD ms);
 extern void init_DSPI_1(void);
-extern void initEMIOS_0Image(void);			//≥°––÷–∂œ≥ı ºªØ
+extern void initEMIOS_0Image(void);			//Âú∫Ë°å‰∏≠Êñ≠ÂàùÂßãÂåñ
 
 
 #endif

@@ -9,21 +9,21 @@ int main(void)
   //=================================
   	disable_watchdog();
   	init_modes_and_clock();
-  	initEMIOS_0Image();//ÉãÏñÍ·ÊäÈëÖĞ¶Ï³õÊ¼»¯
+  	initEMIOS_0Image();//æ‘„åƒå¤´è¾“å…¥ä¸­æ–­åˆå§‹åŒ–
   	init_led();
-  		/* ³õÊ¼»¯SPI×ÜÏß */
+  		/* åˆå§‹åŒ–SPIæ€»çº¿ */
   	init_DSPI_1();
   	
-  	/* ¿ªÆôÍâ²¿×ÜÖĞ¶Ï */
+  	/* å¼€å¯å¤–éƒ¨æ€»ä¸­æ–­ */
   	enable_irq();
   	
-  	/* ³õÊ¼»¯ÏÔÊ¾ÆÁ */
+  	/* åˆå§‹åŒ–æ˜¾ç¤ºå± */
   	initLCD();
   	
   	//LCD_DISPLAY();
-  	LCD_Fill(0xFF);	/* ÁÁÆÁ */
+  	LCD_Fill(0xFF);	/* äº®å± */
   	delay_ms(1000);
-  	LCD_Fill(0x00);	/* ºÚÆÁ */
+  	LCD_Fill(0x00);	/* é»‘å± */
   	delay_ms(1000);
   	for(y=0;y<=0;y++)
   	{

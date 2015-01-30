@@ -4,10 +4,10 @@
 
 void initLCD(void);
 void LCD_WrDat(BYTE data);
-void LCD_WrCmd(BYTE cmd);  //输出cmd
+void LCD_WrCmd(BYTE cmd);  //杈撳嚭cmd
 void LCD_Set_Pos(BYTE x, BYTE y);
 void LCD_Fill(BYTE bmp_data);
-void LCD_CLS(void);//清屏
+void LCD_CLS(void);//娓呭睆
 void LCD_PutPixel(BYTE x,BYTE y);
 void LCD_Rectangle(BYTE x1,BYTE y1,BYTE x2,BYTE y2,BYTE gif);
 void LCD_P6x8Str(BYTE x,BYTE y,BYTE ch[]);
@@ -20,10 +20,10 @@ void LCD_DISPLAY(void);
 
 
 //*****************OLED****************//
-//#define LCD_SCL  SIU.GPDO[0].R//时钟
-//#define LCD_SDA  SIU.GPDO[1].R//输入输出
+//#define LCD_SCL  SIU.GPDO[0].R//鏃堕挓
+//#define LCD_SDA  SIU.GPDO[1].R//杈撳叆杈撳嚭
 #define LCD_RST  SIU.GPDO[37].R//reset
-#define LCD_DC  SIU.GPDO[43].R//命令/数据
+#define LCD_DC  SIU.GPDO[43].R//鍛戒护/鏁版嵁
 
 #define XLevelL		0x00
 #define XLevelH		0x10
