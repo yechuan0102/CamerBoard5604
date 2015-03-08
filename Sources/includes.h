@@ -40,11 +40,16 @@ typedef unsigned short word;
 #endif
 
 #include "MPC5604B.h"
+#include "typedefs.h"
+#include <stddef.h>
+#include <wchar.h>
 #include "Base.h"
 #include "init.h"
 #include "lcd.h"
 #include "video.h"
 #include "IntcInterrupts.h"
+#include "CharLibData.h"
+#include "CharLibAlgorithm.h"
 
 ///****************LED****************///
 #if 1

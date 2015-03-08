@@ -3,12 +3,14 @@
 
 int main(void) 
 {
+    wchar_t test1;
+    int xSize1;
+    uint8_t font1[16*16];
+    
   	disable_watchdog();
   	init_modes_and_clock();
-  	initEMIOS_0Image();/* 摄像头输入中断初始化 */
   	init_led();
   	init_DSPI_1();/* 初始化SPI总线 */
-  	init_EMIOS_0();
     init_key_0();
     init_key_1();
     init_key_2();
@@ -22,20 +24,12 @@ int main(void)
   	LCD_Fill(0x00);	/* 黑屏 */
   	delay_ms(1000);
 
-  	EMIOS_0.CH[3].CCR.B.FEN=1;
+  	test1 = L'人';
+  	unicode_to_font(test1, 16, 16, &xSize1, font1);
   	
   	/* Loop forever */
     for (;;) 
     {
-		D2=~D2;
-        if(fieldover==1)
-        {
-            Display_Video();
-            D3=~D3;
-            fieldover=0;
-            EMIOS_0.CH[3].CSR.B.FLAG = 1;
-            EMIOS_0.CH[3].CCR.B.FEN=1;
-        }
     }
 }
 
