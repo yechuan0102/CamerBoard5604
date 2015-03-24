@@ -12,7 +12,7 @@ int main(void)
     init_key_0();
     init_key_1();
     init_key_2();
-    init_key_3();
+    //init_key_3();
   	enable_irq();/* 开启外部总中断 */
   	
   	initLCD();/* 初始化显示屏 */

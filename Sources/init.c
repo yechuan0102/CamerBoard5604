@@ -231,6 +231,8 @@ void init_key_2(void)
  * 初始化按键3
  * 使用PB11 E0UC3 IRQ142
  */
+
+#if 0
 void init_key_3(void)
 {
     EMIOS_0.CH[3].CCR.B.MODE = 0x02; // Mode is SAIC, continuous 
@@ -242,7 +244,7 @@ void init_key_3(void)
     INTC_InstallINTCInterruptHandler(INTC_press_key_3_handler, 142, 1);
     EMIOS_0.CH[3].CCR.B.FEN = 1;  //interupt enbale
 }
-
+#endif
 
 /*
  * 按键0,按键2中断处理函数
